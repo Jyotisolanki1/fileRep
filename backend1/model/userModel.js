@@ -14,7 +14,8 @@ const userSchema = mongoose.Schema({
         required :true
     },
     profile:{
-        type:String
+        type:String,
+        default:'profile.jpg'
     }
 },
 {

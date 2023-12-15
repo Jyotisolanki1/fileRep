@@ -4,7 +4,7 @@ const genToken = require('../utils/genToken');
 
 const getUser = asyncHandler(
     async (req, res) => {
-        console.log("get user data");
+        console.log(req.user);
     }
 )
 
@@ -48,11 +48,13 @@ const registerUser = asyncHandler(
 const loginUser = asyncHandler(
     async (req, res) => {
         try {
+           
             const { email, password } = req.body;
             const user = await User.findOne({ email });
             if (user && (await user.isPasswordMatch(password))) {
                 genToken(res, user._id)
-                res.status(400).json(user)
+                console.log(user)
+                res.status(200).json(user)
             } else {
                 res.status(401);
                 throw new Error('Invalid email and password')
@@ -65,6 +67,37 @@ const loginUser = asyncHandler(
     }
 )
 
+//update profile
+const update = asyncHandler(async (req, res) => {
+    console.log("hello")
+    console.log(req.body)
+    const user = await User.findById(req.user._id);
+  
+    if (user) {
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      user.profile = req.body.profile ||  user.profile;
+      
+      
+      if (req.body.password) {
+        user.password = req.body.password;
+      }
+  
+      const updatedUser = await user.save();
+  
+      res.json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        profile:updatedUser.profile,
+      });
+    } else {
+      res.status(404);
+      throw new Error('User not found');
+    }
+  });
+
+//lgout profile
 const logoutUser = asyncHandler(async (req, res) => {
     res.cookie('auth', '', {
         httpOnly: true,
@@ -72,4 +105,4 @@ const logoutUser = asyncHandler(async (req, res) => {
     })
     res.status(200).json({ msg: "user logout success" });
 });
-module.exports = { getUser, registerUser, loginUser, logoutUser }
+module.exports = { getUser, registerUser, loginUser, logoutUser ,update}

@@ -4,14 +4,15 @@ const User = require('../model/userModel')
 
 const authMiddleware = asyncHandler(
     async(req, res, next) => {
+      console.log("here")
      let token;
      token = req.cookies.auth;
     
      if(token){
         try {
-            console.log("token")
+            
             const decoded = jwt.verify(token, process.env.SECRET);
-            req.user = await User.findById(decoded.userId).select('-password');
+            req.user = await User.findById(decoded.id).select('-password');
             next();
         } catch (error) {
          console.error(error);

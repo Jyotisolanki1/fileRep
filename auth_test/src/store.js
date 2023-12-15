@@ -9,5 +9,6 @@ const store  = configureStore({
     },
     middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(auth.middleware),
+    devTools: true,
 });
 export default store;

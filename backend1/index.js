@@ -4,12 +4,14 @@ const dotenv = require('dotenv');
 const db = require('./config/db');
 const userRoute = require('./routes/userRoute');
 const cookieParser = require('cookie-parser');
+const path = require('path')
 const { notFound, errorHandler } = require('./middleware/errorHandler');
 dotenv.config();
 
 
 const PORT = process.env.PORT;
 const app = express();
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use(cookieParser())
 const corsOptions = {
     origin: "http://localhost:3000",
