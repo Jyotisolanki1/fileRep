@@ -39,8 +39,8 @@ function Profile() {
         console.log(name ,email,password,file)
         
     try {      
-        const result = await updateData(result).unwrap();
-        console.log(result)
+        const result = await updateData(formData).unwrap();
+        
         dispatch(setUser({...result}))
            toast.success("registered successfully"); 
            navigate('/')      

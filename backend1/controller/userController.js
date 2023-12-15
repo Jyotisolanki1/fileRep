@@ -69,14 +69,13 @@ const loginUser = asyncHandler(
 
 //update profile
 const update = asyncHandler(async (req, res) => {
-    console.log("hello")
-    console.log(req.body)
-    const user = await User.findById(req.user._id);
-  
+
+    const user = await User.findById(req.user._id);  
+    console.log(user)
     if (user) {
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
-      user.profile = req.body.profile ||  user.profile;
+      user.profile = req.file.filename ||  user.profile;
       
       
       if (req.body.password) {
